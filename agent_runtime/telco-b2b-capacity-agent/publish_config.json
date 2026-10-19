@@ -1,0 +1,6 @@
+{
+  "displayName": "Telco B2B Capacity & RFx Deal Agent",
+  "description": "Agentic Deal Cockpit assistant for Telco B2B RFx analysis, 45-site Cloud Spanner fiber feasibility, Near-Net CAPEX amortization, and 200-question compliance grounding.",
+  "icon_url": "https://storage.googleapis.com/${GCP_PROJECT}-agent-assets/telco_icon.jpg",
+  "tool_description": "Check clinic site On-Net/Near-Net fiber feasibility in Cloud Spanner, model Near-Net CAPEX amortization & deal gross margin in BigQuery, and query the 200-question RFx compliance matrix."
+}

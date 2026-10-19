@@ -1,0 +1,16 @@
+# Virtual environments & caches
+.venv/
+agent_runtime/**/.venv/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+**/.pytest_cache/
+.ruff_cache/
+**/.ruff_cache/
+.google-agents-cli/
+**/.google-agents-cli/
+
+# Local environment secrets
+.env
+**/.env

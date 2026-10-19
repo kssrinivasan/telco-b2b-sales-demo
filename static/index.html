@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agentic Deal Cockpit — Telco B2B AI Sales & Capacity Planning Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <!-- Top Executive Bar -->
+  <header class="top-header">
+    <div class="brand-cluster">
+      <div class="brand-mark">AI</div>
+      <div class="brand-titles">
+        <h1>
+          Telco B2B Agentic Deal Cockpit
+          <span class="badge-live" id="live-status-badge">LIVE: Spanner + BigQuery + Vertex AI Search</span>
+        </h1>
+        <div class="brand-subtitle">
+          Pursuit: <strong>Apex Health Regional Network</strong> (RFP #AH-2026-SDWAN-094) — 45 Clinic Sites · Dual-Transport SD-WAN &amp; 10G Optical Wave · Google Cloud &amp; Epic EHR Interconnect
+        </div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-emerald" id="btn-run-all-steps" onclick="runFullDemoFlow()">
+        &#9654; Run Guided 4-Step Sales Demo
+      </button>
+      <a class="btn btn-outline" style="background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.25);" href="/api/docs/Apex_Health_RFP_SDWAN_Cloud.pdf" target="_blank">
+        View Customer RFP PDF
+      </a>
+      <a class="btn btn-primary" href="/api/proposal/pdf" target="_blank">
+        Download Final Proposal PDF
+      </a>
+    </div>
+  </header>
+
+  <!-- Executive Value & ROI Banner -->
+  <section class="value-banner">
+    <div class="kpi-tile kpi-emerald">
+      <div class="kpi-label">RFx Turnaround Time</div>
+      <div class="kpi-value" id="kpi-turnaround">21 Days &rarr; 11 Mins</div>
+      <div class="kpi-sub">Compressed across 4 teams (99.6% faster)</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-label">Executive Deal Score</div>
+      <div class="kpi-value" id="kpi-deal-score">92% (High Fit)</div>
+      <div class="kpi-sub">Tier-1 Healthcare Strategic Pursuit</div>
+    </div>
+    <div class="kpi-tile kpi-emerald">
+      <div class="kpi-label">Compliance Matrix (200 Qs)</div>
+      <div class="kpi-value" id="kpi-compliance">185 Auto / 15 Review</div>
+      <div class="kpi-sub">100% Grounded in Vertex AI Search</div>
+    </div>
+    <div class="kpi-tile kpi-amber">
+      <div class="kpi-label">Spanner Footprint (45 Sites)</div>
+      <div class="kpi-value" id="kpi-footprint">43 On-Net · 2 Near-Net</div>
+      <div class="kpi-sub">Sites #28 (82m) &amp; #33 (118m) &lt;150m</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-label">Near-Net Build CAPEX</div>
+      <div class="kpi-value" id="kpi-capex">$4,200 ($0 Upfront)</div>
+      <div class="kpi-sub">Amortized over 36 Mos ($116.67/mo)</div>
+    </div>
+    <div class="kpi-tile kpi-emerald">
+      <div class="kpi-label">Protected Gross Margin</div>
+      <div class="kpi-value" id="kpi-margin">42.4% ($5.35M TCV)</div>
+      <div class="kpi-sub">Exceeds 40% Floor · 89% Win Prob.</div>
+    </div>
+  </section>
+
+  <!-- Split-Screen Cockpit -->
+  <main class="cockpit-layout">
+    <!-- Left Rail: 4-Step Orchestrator + Grounded Copilot Chat -->
+    <aside class="left-rail">
+      <div class="panel-card">
+        <div class="panel-header">
+          <h2>Multi-Agent RFx Workflow (4 Steps)</h2>
+          <span class="mono" style="font-size: 11px; color: var(--brand-primary);" id="step-timer-label">Ready</span>
+        </div>
+        <div class="step-list">
+          <div class="step-card active completed" id="step-card-1" onclick="triggerWorkflowStep(1)">
+            <div class="step-top">
+              <span class="step-badge">STEP 1 · INGESTION AGENT</span>
+              <span class="step-status" id="step-status-1">&#10003; 92% Fit</span>
+            </div>
+            <div class="step-title">Ingest &amp; Deconstruct Apex Health RFP</div>
+            <div class="step-desc">Parses <code>Apex_Health_RFP_SDWAN_Cloud.pdf</code>, flags Sites #28 &amp; #33 fiber extensions &amp; &lt;12ms Epic EHR latency penalty, dispatches Jira/ServiceNow tasks.</div>
+          </div>
+
+          <div class="step-card completed" id="step-card-2" onclick="triggerWorkflowStep(2)">
+            <div class="step-top">
+              <span class="step-badge">STEP 2 · GROUNDING AGENT</span>
+              <span class="step-status" id="step-status-2">&#10003; 185/200 Auto</span>
+            </div>
+            <div class="step-title">200-Question Compliance Matrix</div>
+            <div class="step-desc">Auto-answers 185 questions (100% confidence) via Vertex AI Search &amp; BigQuery; flags 15 items (e.g., Custom BGP Q-052) for SME review.</div>
+          </div>
+
+          <div class="step-card completed" id="step-card-3" onclick="triggerWorkflowStep(3)">
+            <div class="step-top">
+              <span class="step-badge">STEP 3 · CAPACITY AGENT</span>
+              <span class="step-status" id="step-status-3">&#10003; 43 On / 2 Near</span>
+            </div>
+            <div class="step-title">Network Feasibility &amp; Capacity Analysis</div>
+            <div class="step-desc">Checks 45 clinics in Cloud Spanner &amp; BigQuery: 43 On-Net (10G ready), 2 Near-Net (#28 &amp; #33, $4.2k CAPEX), 36-mo amortization preserves 42.4% margin.</div>
+          </div>
+
+          <div class="step-card completed" id="step-card-4" onclick="triggerWorkflowStep(4)">
+            <div class="step-top">
+              <span class="step-badge">STEP 4 · PROPOSAL AGENT</span>
+              <span class="step-status" id="step-status-4">&#10003; Ready</span>
+            </div>
+            <div class="step-title">RFx Response &amp; 1-Click VP Sign-Off</div>
+            <div class="step-desc">Merges compliance matrix, optical diagrams, and 36-month pricing into a branded proposal with 1-click Commercial VP sign-off.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Grounded Copilot Chat -->
+      <div class="panel-card chat-container">
+        <div class="panel-header">
+          <h2>Deal Cockpit AI Copilot (Gemini 3.8 Flash)</h2>
+          <span class="mono" style="font-size: 11px; color: var(--status-onnet);">Grounded</span>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="chat-bubble agent">
+            <strong>Deal Cockpit Orchestrator Ready.</strong><br/>
+            I have ingested <code>Apex_Health_RFP_SDWAN_Cloud.pdf</code> and pre-verified all <strong>45 clinic sites</strong> in Cloud Spanner (<code>b2b-sales-inventory-db</code>) and BigQuery (<code>telco_b2b_sales</code>). Click any workflow step above or ask a question below.
+          </div>
+        </div>
+        <div class="prompt-chips">
+          <button class="chip-btn" onclick="sendQuickPrompt('Why are Site #28 and Site #33 Near-Net, and how do we avoid the 12ms Epic EHR latency penalty?')">Sites #28 &amp; #33 Near-Net + 12ms SLA</button>
+          <button class="chip-btn" onclick="sendQuickPrompt('Explain our recommended response to Question Q-052 on Custom BGP routing and 15ms BFD timers.')">Q-052 Custom BGP Routing</button>
+          <button class="chip-btn" onclick="sendQuickPrompt('How does folding the $4,200 CAPEX into a 36-month amortization impact our 42.4% deal gross margin?')">$4.2k CAPEX Amortization</button>
+        </div>
+        <form class="chat-input-row" onsubmit="handleChatSubmit(event)">
+          <input type="text" id="chat-input" placeholder="Ask about any clinic site, splice closure, SLA, or pricing..." />
+          <button type="submit" class="btn btn-primary">Ask</button>
+        </form>
+      </div>
+    </aside>
+
+    <!-- Right Column: Multi-Tab Artifact Workspace -->
+    <section class="workspace-canvas">
+      <nav class="tab-bar">
+        <button class="tab-btn active" id="tab-btn-brief" onclick="switchTab('brief')">
+          1. Executive Brief &amp; RFP Analysis <span class="tab-count">92% Fit</span>
+        </button>
+        <button class="tab-btn" id="tab-btn-map" onclick="switchTab('map')">
+          2. Google Maps Capacity &amp; Spanner Topology <span class="tab-count">45 Sites</span>
+        </button>
+        <button class="tab-btn" id="tab-btn-compliance" onclick="switchTab('compliance')">
+          3. Compliance Matrix (Vertex AI Search) <span class="tab-count" id="tab-count-compliance">185/200</span>
+        </button>
+        <button class="tab-btn" id="tab-btn-commercial" onclick="switchTab('commercial')">
+          4. Commercial Quote &amp; VP Sign-Off <span class="tab-count" id="tab-count-margin">42.4% Margin</span>
+        </button>
+        <button class="tab-btn" id="tab-btn-telemetry" onclick="switchTab('telemetry')">
+          5. Live Spanner &amp; BigQuery Telemetry <span class="tab-count" id="tab-count-telemetry">Live SQL</span>
+        </button>
+      </nav>
+
+      <!-- TAB 1: EXECUTIVE BRIEF & RFP DECONSTRUCTION -->
+      <div class="tab-pane active" id="tab-pane-brief">
+        <div class="grid-2">
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Step 1 Output: Executive Deal Brief &amp; Risk Extraction</h2>
+              <span class="status-pill onnet">Deal Score: 92% (High Fit)</span>
+            </div>
+            <div class="section-body">
+              <p style="margin-bottom: 12px; color: var(--text-secondary);">
+                <strong>Customer:</strong> Apex Health Regional Network (Seattle, WA HQ — 45 Clinic &amp; Hospital Sites across WA, OR, ID, CA)<br/>
+                <strong>Core Scope:</strong> Dual-Transport Managed SD-WAN + 10Gbps Optical Wavelengths across 45 clinics, 2x 100Gbps Google Cloud Dedicated Interconnects (<code>us-west1</code>), and direct optical wave peering to the Quincy, WA Epic EHR Primary Data Center.
+              </p>
+
+              <div class="constraint-item critical">
+                <div class="constraint-title">
+                  <span>CRITICAL SLA PENALTY CLAUSE: &lt;12.0ms Epic EHR Round-Trip Latency</span>
+                  <span class="status-pill critical">15% MRC Credit / 1ms</span>
+                </div>
+                <div style="font-size: 12.5px;">
+                  RFP Section 2.1 mandates &lt;12.0ms RTD between all 45 clinics and the Primary Epic EHR Data Center. Exceedances trigger a <strong>15% MRC penalty per 1.0ms above 12.0ms</strong> and termination rights above 18.0ms. <em>(Spanner Verification: All 45 clinics achieve 1.5ms–10.4ms RTD on our optical core!)</em>
+                </div>
+              </div>
+
+              <div class="constraint-item">
+                <div class="constraint-title">
+                  <span>INFRASTRUCTURE CONSTRAINT: Site #28 &amp; Site #33 Require Optical Fiber Extensions</span>
+                  <span class="status-pill nearnet">2 Near-Net (&lt;150m)</span>
+                </div>
+                <div style="font-size: 12.5px;">
+                  <strong>43 of 45 sites (95.6%) are On-Net</strong> lit buildings with 10G SFP+ ports reserved. Only <strong>Site #28 (Wenatchee, WA — 82m from splice closure SC-QCY-028)</strong> and <strong>Site #33 (Hood River, OR — 118m from splice closure SC-PDX-033)</strong> require short lateral fiber run extensions ($4,200 total CAPEX).
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="switchTab('map'); focusNearNetSite('SITE-028')">
+                  Inspect Site #28 &amp; #33 on Google Map &rarr;
+                </button>
+                <button class="btn btn-outline" onclick="switchTab('compliance'); filterComplianceQuestions('review', 'ALL')">
+                  Review 15 Flagged Compliance Questions &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Automated Multi-Team Task Pipeline (Jira / ServiceNow / Agent Bus)</h2>
+              <span class="mono" style="font-size: 11px; color: var(--status-onnet);">Zero Manual Handoffs</span>
+            </div>
+            <div class="section-body">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Ticket / Event</th>
+                    <th>Target Team / Agent</th>
+                    <th>Automated Action</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="mono"><strong>SNOW-RFX-901</strong></td>
+                    <td>Network Capacity Agent (Spanner)</td>
+                    <td>Validate 45 clinic coordinates, 10G port reservations &amp; splice closures SC-QCY-028 (82m) / SC-PDX-033 (118m)</td>
+                    <td><span class="status-pill onnet">COMPLETED (0.4s)</span></td>
+                  </tr>
+                  <tr>
+                    <td class="mono"><strong>JIRA-SEC-902</strong></td>
+                    <td>Questionnaire Assistant (Vertex Search)</td>
+                    <td>Ground 200 security, HIPAA BAA, SD-WAN &amp; SLA questions against 5 internal PDF repositories</td>
+                    <td><span class="status-pill onnet">185 AUTO / 15 REVIEW</span></td>
+                  </tr>
+                  <tr>
+                    <td class="mono"><strong>JIRA-OSP-903</strong></td>
+                    <td>Outside Plant (OSP) Cost Engine (BigQuery)</td>
+                    <td>Calculate directional micro-trenching ($1,820) &amp; conduit pull ($2,380) CAPEX for Sites #28 &amp; #33</td>
+                    <td><span class="status-pill onnet">$4,200 VERIFIED</span></td>
+                  </tr>
+                  <tr>
+                    <td class="mono"><strong>DEAL-FIN-904</strong></td>
+                    <td>Commercial Deal Desk &amp; VP Sign-Off</td>
+                    <td>Fold $4,200 CAPEX into 36-month amortization ($116.67/mo) preserving 42.4% Gross Margin</td>
+                    <td><span class="status-pill nearnet" id="pipeline-vp-status">READY FOR 1-CLICK VP APPROVAL</span></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div style="margin-top: 16px; padding: 12px; background: var(--bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+                <div style="font-weight: 700; font-size: 12.5px; margin-bottom: 6px;">Why This Matters in a B2B Sales Pursuit:</div>
+                <div style="font-size: 12px; color: var(--text-secondary);">
+                  Traditionally, Sales Engineering waits <strong>10–14 days</strong> for Outside Plant (OSP) to manually measure fiber splice distances for 45 sites, <strong>5 days</strong> for InfoSec/Legal to answer 200 compliance questions, and <strong>4 days</strong> for Finance to model CAPEX amortization. Here, all 3 workstreams execute in parallel in <strong>under 15 minutes</strong>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vertex AI Search Grounding & RFP Document Library -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2>RFP &amp; Vertex AI Search Grounding Document Repository (<code>gs://rf_response_agent/apex_health_demo_docs/</code>)</h2>
+            <span class="mono" style="font-size: 11px;">Data Store: apex-health-rfx-grounding-store</span>
+          </div>
+          <div class="section-body">
+            <div class="doc-grid" id="grounding-doc-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: GOOGLE MAPS CAPACITY & SPANNER TOPOLOGY -->
+      <div class="tab-pane" id="tab-pane-map">
+        <div class="panel-card">
+          <div class="map-toolbar">
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="btn btn-primary" onclick="resetMapView()">All 45 Clinics + 9 Regional PoPs</button>
+              <button class="btn btn-amber" onclick="focusNearNetSite('SITE-028')">&#9888; Zoom Site #28 (Wenatchee — 82m Splice Run)</button>
+              <button class="btn btn-amber" onclick="focusNearNetSite('SITE-033')">&#9888; Zoom Site #33 (Hood River — 118m Splice Run)</button>
+              <button class="btn btn-outline" onclick="toggleMapFilter('nearnet')">Filter: 2 Near-Net Only</button>
+              <button class="btn btn-outline" onclick="toggleMapFilter('onnet')">Filter: 43 On-Net Only</button>
+            </div>
+            <div class="map-legend">
+              <span><i class="legend-dot" style="background: #10b981;"></i>On-Net Clinic (43)</span>
+              <span><i class="legend-dot" style="background: #f59e0b;"></i>Near-Net &lt;150m (Sites #28 &amp; #33)</span>
+              <span><i class="legend-dot" style="background: #2563eb;"></i>Optical PoP / Cloud Interconnect (9)</span>
+              <span><i class="legend-dot" style="background: #dc2626;"></i>Splice Closure Vault</span>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <div class="map-workspace">
+              <div>
+                <div id="google-map-canvas"></div>
+              </div>
+
+              <!-- Live Cloud Spanner Site Inspector Drawer -->
+              <div class="panel-card" style="border-color: var(--brand-primary);" id="site-inspector-card">
+                <div class="panel-header" style="background: var(--bg-navy); color: #fff;">
+                  <h2 style="color: #fff;">Cloud Spanner Live Site Inspector</h2>
+                  <span class="badge-live" id="inspector-latency-badge">14.2ms SQL</span>
+                </div>
+                <div class="section-body" id="site-inspector-body">
+                  <!-- Populated dynamically when a site is clicked -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Complete 45-Site Cloud Spanner Inventory Table -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2>Cloud Spanner 45-Site Optical Feasibility, Splice Distance &amp; Epic EHR Latency Schedule (<code>ClinicSites</code>)</h2>
+            <span class="mono" style="font-size: 11.5px; color: var(--status-onnet);">Max Latency: 10.4ms (100% Compliant with &lt;12.0ms SLA)</span>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Site ID</th>
+                  <th>Clinic Facility Name &amp; City</th>
+                  <th>Status</th>
+                  <th>Serving PoP</th>
+                  <th>Splice Closure</th>
+                  <th>Distance</th>
+                  <th>Optical EHR Latency</th>
+                  <th>Legacy WAN</th>
+                  <th>Port Readiness &amp; Construction</th>
+                  <th>Build CAPEX</th>
+                </tr>
+              </thead>
+              <tbody id="sites-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: 200-QUESTION COMPLIANCE MATRIX -->
+      <div class="tab-pane" id="tab-pane-compliance">
+        <div class="panel-card">
+          <div class="map-toolbar">
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+              <button class="btn btn-primary" id="filter-q-all" onclick="filterComplianceQuestions('all', currentCategoryFilter)">All Questions (200)</button>
+              <button class="btn btn-outline" id="filter-q-auto" onclick="filterComplianceQuestions('auto', currentCategoryFilter)">&#10003; Auto-Answered 100% Conf. (185)</button>
+              <button class="btn btn-amber" id="filter-q-review" onclick="filterComplianceQuestions('review', currentCategoryFilter)">&#9888; Flagged for Human Review (15)</button>
+              <span style="margin: 0 6px; color: var(--border-strong);">|</span>
+              <select id="category-select" onchange="filterComplianceQuestions(currentStatusFilter, this.value)" style="padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border-strong); font-weight: 600;">
+                <option value="ALL">All Domains (SEC / NET / CLD / SLA / OPS)</option>
+                <option value="SEC">SEC — HIPAA, HITRUST &amp; Encryption (45)</option>
+                <option value="NET">NET — SD-WAN, BGP &amp; Optical Access (50)</option>
+                <option value="CLD">CLD — Google Cloud &amp; Epic EHR Interconnect (40)</option>
+                <option value="SLA">SLA — 99.999% Availability &amp; &lt;12ms Penalties (35)</option>
+                <option value="OPS">OPS — 24x7 Healthcare NOC &amp; ServiceNow (30)</option>
+              </select>
+              <input type="text" id="question-search-input" placeholder="Search BGP, Site #28, 12ms, HIPAA..." oninput="debouncedQuestionSearch()" style="padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border-strong); width: 220px;" />
+            </div>
+            <div>
+              <button class="btn btn-emerald" onclick="approveAllFlaggedQuestions()">
+                &#10003; 1-Click SME Approve All 15 Flagged Items
+              </button>
+            </div>
+          </div>
+
+          <div class="table-scroll" style="max-height: 620px;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 78px;">ID / Cat</th>
+                  <th style="width: 28%;">RFP Compliance Question</th>
+                  <th style="width: 34%;">AI-Grounded Response (Vertex AI Search + BigQuery)</th>
+                  <th style="width: 18%;">Exact Source PDF Citation</th>
+                  <th style="width: 14%;">Confidence &amp; Action</th>
+                </tr>
+              </thead>
+              <tbody id="questions-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: COMMERCIAL QUOTE, CAPEX AMORTIZATION SIMULATOR & VP SIGN-OFF -->
+      <div class="tab-pane" id="tab-pane-commercial">
+        <div class="grid-2">
+          <!-- Interactive Deal Economics & CAPEX Amortization Simulator -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Step 3 &amp; 4: Interactive CAPEX Amortization &amp; Deal Margin Simulator</h2>
+              <span class="status-pill onnet" id="sim-guardrail-pill">Margin Guardrail: PASS (&ge;40%)</span>
+            </div>
+            <div class="section-body">
+              <div class="sim-control-box">
+                <div class="sim-row">
+                  <label style="font-weight: 700;">Near-Net CAPEX ($4,200) Amortization Schedule:</label>
+                  <select id="sim-amort-months" onchange="runEconomicsSimulation()" style="padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-strong); font-weight: 700;">
+                    <option value="36" selected>36 Months — Fold $4,200 into MRC ($116.67/mo, $0 Upfront NRE) [Recommended]</option>
+                    <option value="24">24 Months — Fold $4,200 into 24-Mo Term ($175.00/mo, $0 Upfront NRE)</option>
+                    <option value="12">12 Months — Fold $4,200 into 12-Mo Term ($350.00/mo, $0 Upfront NRE)</option>
+                    <option value="0">0 Months — Bill $4,200 Upfront NRE to Customer (Increases Churn Risk)</option>
+                  </select>
+                </div>
+                <div class="sim-row" style="margin-bottom: 0;">
+                  <label style="font-weight: 700;">Additional Discretionary Discount Override: <span class="mono" id="sim-discount-label">0.0%</span></label>
+                  <input type="range" id="sim-discount-slider" min="0" max="8" step="0.5" value="0" oninput="runEconomicsSimulation()" style="width: 220px;" />
+                </div>
+              </div>
+
+              <div class="grid-3" style="margin-bottom: 14px;">
+                <div class="kpi-tile">
+                  <div class="kpi-label">Monthly Recurring (MRR)</div>
+                  <div class="kpi-value" id="sim-mrr">$148,500</div>
+                  <div class="kpi-sub" id="sim-tcv">TCV: $5,346,000 (36m)</div>
+                </div>
+                <div class="kpi-tile kpi-emerald">
+                  <div class="kpi-label">Deal Gross Margin</div>
+                  <div class="kpi-value" id="sim-margin">42.4%</div>
+                  <div class="kpi-sub">Floor Requirement: 40.0%</div>
+                </div>
+                <div class="kpi-tile kpi-amber">
+                  <div class="kpi-label">Projected Win Prob.</div>
+                  <div class="kpi-value" id="sim-winprob">89.0%</div>
+                  <div class="kpi-sub" id="sim-nre-note">$0 Upfront NRE Charged</div>
+                </div>
+              </div>
+
+              <h3 style="font-size: 13px; font-weight: 700; margin-bottom: 8px;">BigQuery Near-Net Lateral Fiber Build Cost Breakdown (<code>fiber_build_cost_models</code>)</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Clinic Site</th>
+                    <th>Splice Distance &amp; Civil Method</th>
+                    <th>Build CAPEX</th>
+                    <th>36m Amortized</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="row-nearnet">
+                    <td><strong>SITE-028</strong><br/>Wenatchee, WA</td>
+                    <td>82m from <code>SC-QCY-028</code> — Directional Micro-Trenching + 48-Strand SMF Pull (9 days)</td>
+                    <td class="mono"><strong>$1,820.00</strong></td>
+                    <td class="mono">$50.56 / mo</td>
+                  </tr>
+                  <tr class="row-nearnet">
+                    <td><strong>SITE-033</strong><br/>Hood River, OR</td>
+                    <td>118m from <code>SC-PDX-033</code> — Existing Municipal Conduit Pull + Vault Splice (11 days)</td>
+                    <td class="mono"><strong>$2,380.00</strong></td>
+                    <td class="mono">$66.11 / mo</td>
+                  </tr>
+                  <tr>
+                    <td><strong>43 On-Net Sites</strong><br/>WA / OR / ID / CA</td>
+                    <td>0m–16m Existing Lit Building Single-Mode Fiber Riser &amp; Reserved 10G SFP+ Ports</td>
+                    <td class="mono"><strong>$0.00</strong></td>
+                    <td class="mono">$0.00 / mo</td>
+                  </tr>
+                  <tr style="background: var(--bg-subtle); font-weight: 700;">
+                    <td colspan="2">Total Near-Net Construction CAPEX (100% Waived Upfront via 36-Month Amortization)</td>
+                    <td class="mono">$4,200.00</td>
+                    <td class="mono">$116.67 / mo</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Step 4: 1-Click Commercial VP Sign-Off & Proposal Export -->
+          <div class="panel-card">
+            <div class="panel-header" style="background: var(--bg-navy); color: #fff;">
+              <h2 style="color: #fff;">Step 4: Executive Proposal &amp; 1-Click Commercial VP Sign-Off</h2>
+              <span class="badge-live" id="signoff-status-badge">AWAITING VP APPROVAL</span>
+            </div>
+            <div class="section-body">
+              <div style="padding: 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: hsl(214, 35%, 98%); margin-bottom: 14px;">
+                <div style="font-weight: 800; font-size: 14px; color: var(--bg-navy); margin-bottom: 6px;">
+                  Executive Cover Letter Preview — Proposal #PROP-APEX-2026-1012
+                </div>
+                <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 8px;">
+                  <strong>To:</strong> Apex Health Regional Network Procurement &amp; Clinical Architecture Board<br/>
+                  <strong>Subject:</strong> Binding 36-Month Proposal for 45-Site Dual-Transport 10G Optical SD-WAN &amp; Multi-Cloud Interconnect
+                </p>
+                <p style="font-size: 12px; color: var(--text-primary); line-height: 1.55;">
+                  We are pleased to submit a 100% compliant binding proposal grounded on live Cloud Spanner optical inventory. <strong>43 of your 45 clinic sites are lit On-Net today</strong> with 10Gbps SFP+ ports reserved. For your two Near-Net clinics—<strong>Site #28 (Wenatchee, 82m)</strong> and <strong>Site #33 (Hood River, 118m)</strong>—we complete lateral fiber extensions within 11 business days and <strong>waive 100% of the $4,200 construction CAPEX</strong> via our 36-month amortization schedule. Every clinic is contractually guaranteed to operate between <strong>1.5ms and 10.4ms RTD</strong> to your Quincy Epic EHR Primary Enclave, backed by a 99.999% Five-Nines SLA.
+                </p>
+              </div>
+
+              <div style="padding: 14px; border-radius: var(--radius-sm); border: 2px solid var(--brand-primary); background: var(--brand-primary-soft);" id="vp-approval-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <div>
+                    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--brand-primary);">Commercial Governance Sign-Off Card</div>
+                    <div style="font-size: 14px; font-weight: 800;">Elena Rostova — SVP, Commercial &amp; Enterprise Markets</div>
+                  </div>
+                  <span class="status-pill onnet" id="vp-card-pill">Margin Verified: 42.4%</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;" id="vp-signoff-timestamp">
+                  Approves $5,346,000 TCV quote, $4,200 Near-Net CAPEX 36-month amortization waiver, and 15% MRC &lt;12ms latency SLA schedule.
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <button class="btn btn-emerald" id="btn-vp-signoff" onclick="submitVpSignoff()">
+                    &#10003; 1-Click Commercial VP Approve &amp; Release Proposal
+                  </button>
+                  <a class="btn btn-primary" href="/api/proposal/pdf" target="_blank">
+                    &#128196; Download Branded Proposal PDF
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Commercial Pricing Line-Item Table -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2>Commercial Bill of Materials &amp; Pricing Schedule (<code>anthosbm-292404.telco_b2b_sales.product_pricing_catalog</code>)</h2>
+            <span class="mono" style="font-size: 11.5px;">36-Month Term · 45 Clinic Sites + 2x 100G Cloud Interconnects</span>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>SKU ID</th>
+                  <th>Product / Service Tier</th>
+                  <th>Category</th>
+                  <th>Qty</th>
+                  <th>List Unit MRC</th>
+                  <th>Proposed Unit MRC</th>
+                  <th>Total Monthly MRC</th>
+                  <th>Contractual SLA Commitment</th>
+                </tr>
+              </thead>
+              <tbody id="pricing-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: LIVE CLOUD SPANNER & BIGQUERY TELEMETRY -->
+      <div class="tab-pane" id="tab-pane-telemetry">
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2>Live GCP Backend Query Telemetry (Cloud Spanner · BigQuery · Vertex AI Search · Gemini 3.8 Flash)</h2>
+            <button class="btn btn-primary" onclick="refreshLiveGcpDatabases()">
+              &#8635; Execute Live Spanner &amp; BigQuery Sync Now
+            </button>
+          </div>
+          <div class="section-body">
+            <div class="grid-3" style="margin-bottom: 14px;">
+              <div class="kpi-tile">
+                <div class="kpi-label">Cloud Spanner Instance</div>
+                <div class="kpi-value" style="font-size: 14px;">networktopology-instance</div>
+                <div class="kpi-sub">DB: <code>b2b-sales-inventory-db</code> (4 Tables)</div>
+              </div>
+              <div class="kpi-tile">
+                <div class="kpi-label">BigQuery Dataset</div>
+                <div class="kpi-value" style="font-size: 14px;">anthosbm-292404.telco_b2b_sales</div>
+                <div class="kpi-sub">4 Tables (Cost, Pricing, Bids, 200 Qs)</div>
+              </div>
+              <div class="kpi-tile">
+                <div class="kpi-label">Vertex AI Search Store</div>
+                <div class="kpi-value" style="font-size: 14px;">apex-health-rfx-grounding-store</div>
+                <div class="kpi-sub">5 Indexed Healthcare &amp; SLA PDFs</div>
+              </div>
+            </div>
+            <div id="telemetry-log-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
